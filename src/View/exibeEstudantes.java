@@ -2,21 +2,28 @@
 package View;
 
 import Controle.Controle; //importa a classe Controle
+import Model.DAO;
 import Model.Estudante; //importa a classe Estudante
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList; //importa "biblioteca" para utilização de ArrayList
 import java.util.List; //importa "biblioteca" para utilização de List
 import javax.swing.JOptionPane; //importa swing do JOptionPane (janela de notificação)
 import javax.swing.table.DefaultTableModel; //importa a classe DefaultTableModel para criação da tabela
 
 public class exibeEstudantes extends javax.swing.JFrame {
-
+    
+    DAO dao = new DAO(); //cria o objeto 'dao' da classe DAO
     Controle c = new Controle(); //cria o objeto 'c' da classe Controle
-    Estudante estudante = new Estudante();
+    Connection con = dao.conectar(); //cria uma conexão 'con'
+    PreparedStatement stmt = null; //query do banco de dados
+    Estudante estudante = new Estudante(); // cria objeto 'estudante' da classe Estudante
     cadEstudante cadestudante = new cadEstudante(); //cria o objeto 'cadestudante' da classe cadEstudante
     DefaultTableModel tabela; //cria o objeto 'tabela' da coleção DefaultTableModel
     
     public exibeEstudantes() { //construtor
         initComponents();
+        dao.conectar(); //conecta com o banco de dados
         preencherTabela(); //preenche a tabela quando a tela é aberta
     }
 
@@ -97,7 +104,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
                                 .addComponent(edtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1)))
-                        .addGap(0, 224, Short.MAX_VALUE))
+                        .addGap(0, 214, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -142,7 +149,9 @@ public class exibeEstudantes extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,8 +223,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        limparTabela(); //limpa a tabela
-        preencherTabela(); //chama função para preencher a tabela
+        dao.desconectar(); //fecha conexão com banco de dados
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

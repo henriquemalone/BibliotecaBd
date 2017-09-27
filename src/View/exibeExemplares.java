@@ -1,25 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package View;
 
 import Controle.Controle;
+import Model.DAO;
+import Model.Estudante;
 import Model.Livro;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class exibeExemplares extends javax.swing.JFrame {
-
+    
+    DAO dao = new DAO(); //cria o objeto 'dao' da classe DAO
     Controle c = new Controle(); //cria o objeto 'c' da classe Controle
+    Connection con = dao.conectar(); //cria uma conexão 'con'
+    PreparedStatement stmt = null; //query do banco de dados
     DefaultTableModel tabela; //cria o objeto 'tabela' da coleção DefaultTableModel
     
     public exibeExemplares() {
         initComponents();
+        dao.conectar(); //conecta com o banco de dados
         preencherTabela(); //chama função para preencher a tabela
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -49,6 +55,9 @@ public class exibeExemplares extends javax.swing.JFrame {
             }
             public void windowDeactivated(java.awt.event.WindowEvent evt) {
                 formWindowDeactivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -111,7 +120,7 @@ public class exibeExemplares extends javax.swing.JFrame {
                                 .addComponent(edtEditora, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnProcurar)))
-                        .addGap(0, 63, Short.MAX_VALUE)))
+                        .addGap(0, 53, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,7 +156,9 @@ public class exibeExemplares extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,8 +195,7 @@ public class exibeExemplares extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        limparTabela(); //limpa a tabela
-        preencherTabela(); //chama função para preencher a tabela
+        dao.desconectar(); //desconecta do banco de dados
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
@@ -202,10 +212,10 @@ public class exibeExemplares extends javax.swing.JFrame {
             linhaSel = jTable1.getSelectedRow();  //variavel 'linhaSel' recebera a linha da tabela selecionada 
             id = (int) tabela.getValueAt(linhaSel,0); //variavel 'id' recebera o valor das coordenadas selecionada(linhaSel e coluna zero para receber o id do estudante) 
            
-            if (JOptionPane.showConfirmDialog(null,"Deseja realmente apagar o registro desse estudante?")==JOptionPane.OK_OPTION){ //notificação que pergunta se o usuario realmente quer excluir o estudante selecionado
+            if (JOptionPane.showConfirmDialog(null,"Deseja realmente apagar o registro desse exemplar?")==JOptionPane.OK_OPTION){ //notificação que pergunta se o usuario realmente quer excluir o estudante selecionado
                 try{
                     if(c.deletaExemplar(id)==true){ //envia a variavel 'id' para o metodo deletaEstudante na classe Controle)
-                        JOptionPane.showMessageDialog(null,"Estudante deletado com sucesso!"); //abrirá uma janela informando que o estudate foi deletado com sucesso
+                        JOptionPane.showMessageDialog(null,"Exemplar deletado com sucesso!"); //abrirá uma janela informando que o estudate foi deletado com sucesso
                     }
                 } catch (Exception e){
                     JOptionPane.showMessageDialog(null, "Erro ao deletar o exemplar!\nERRO:"+e.getMessage()); //caso ocorra algum erro, abrirá uma janela informando que aconteceu algo de errado e o erro que ocorreu  
@@ -215,6 +225,10 @@ public class exibeExemplares extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Nenhum exemplar selecionado!"); //caso nao seja selecionada nenhuma linha da tabela, abrira uma tela de notificação infromando que o usuário não selecionou nenhum estudante (linha)
         }
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+    
+    }//GEN-LAST:event_formWindowOpened
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

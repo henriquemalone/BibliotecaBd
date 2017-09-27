@@ -10,7 +10,6 @@ public class Revista extends Exemplar{
     public void addRevista(){
         titulo = getTitulo(); //variavel titulo recebe o titulo da revista
         
-        c.adicionaExemplar(titulo, "", "", "Revista");
         try{ //tenta realizar
             c.adicionaExemplar(titulo, "", "", "Revista");  //chama o metodo adicionaExemplar da classe Controle
             JOptionPane.showMessageDialog(null, "Exemplar cadastrado com sucesso!"); //abre uma janela informando que o cadastro foi realizado com sucesso

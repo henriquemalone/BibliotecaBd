@@ -23,7 +23,7 @@ public class Controle {
     Exemplar exemplar; //objeto da classe Exemplar
     Emprestimo emprestimo; //objeto da classe Emprestimo
     Connection con = dao.conectar(); //cria uma conexão 'con'
-    PreparedStatement stmt = null;
+    PreparedStatement stmt = null; //query do banco de dados
     ResultSet rs = null;
     
         public boolean adicionaEstudante(String nome, String sexo, String dataNasc, String cpf, String rg, String celular, 
@@ -52,7 +52,16 @@ public class Controle {
             return true; 
             }catch (Exception e) {
                 return false;
-            }
+            } finally { //finalmente
+                try { //tenta
+                    if(stmt != null){ //se a query for diferente de nula
+			stmt.close(); //fechara a query
+                    }
+		con.close(); //fechara a conexão
+		} catch (SQLException e) {
+                    e.printStackTrace(); //erro
+		}
+            }   
 	}
         
         public List<Estudante> exibeEstudantes(){
@@ -82,7 +91,7 @@ public class Controle {
             }
             } catch(SQLException ex){
                Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
             
             return listaEstudantes;
         }
@@ -117,7 +126,7 @@ public class Controle {
                 }
             } catch(SQLException ex){
                 Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex); //caso ocorra algum erro abrirá uma janela informando o erro
-                }
+            }
 
             return procuraEstudante;
         }
@@ -167,18 +176,36 @@ public class Controle {
         
         public boolean adicionaExemplar(String titulo, String autor, String editora, String categoria) { //metodo para adicionar exemplar no banco de dados
             try{
-            String query = " insert into exemplares (titulo, autor, editora, categoria, emprestado)"+ " values (?, ?, ?, ?, 0)"; //linha de comando do myseql
-            PreparedStatement preparedStmt = dao.conectar().prepareStatement(query); //conexão com o banco de dados
-            preparedStmt.setString (1, titulo); //variavel que substituira os '?' a linha de comando do mysql
-            preparedStmt.setString (2, autor);  //variavel que substituira os '?' a linha de comando do mysql
-            preparedStmt.setString (3, editora);  //variavel que substituira os '?' a linha de comando do mysql
-            preparedStmt.setString (4, categoria);  //variavel que substituira os '?' a linha de comando do mysql
-            preparedStmt.execute(); //executa os comandos mysql
+                String query = " insert into exemplares (titulo, autor, editora, categoria, emprestado)"+ " values (?, ?, ?, ?, 0)"; //linha de comando do myseql
+                PreparedStatement preparedStmt = dao.conectar().prepareStatement(query); //conexão com o banco de dados
+                preparedStmt.setString (1, titulo); //variavel que substituira os '?' a linha de comando do mysql
+                preparedStmt.setString (2, autor);  //variavel que substituira os '?' a linha de comando do mysql
+                preparedStmt.setString (3, editora);  //variavel que substituira os '?' a linha de comando do mysql
+                preparedStmt.setString (4, categoria);  //variavel que substituira os '?' a linha de comando do mysql
+                preparedStmt.execute(); //executa os comandos mysql
         
-            return true; 
-            }catch (Exception e) {
+                return true; 
+            } catch (Exception e) {
                 return false;
-            }
+            } finally { //finalmente
+                try { //tenta
+                    if(stmt != null){ //se a query for diferente de nula
+			stmt.close(); //fechara a query
+                    }
+                    con.close(); //fechara a conexão
+		} catch (SQLException e) {
+                    e.printStackTrace(); //erro
+		}  finally { //finalmente
+                    try { //tenta
+                        if(stmt != null){ //se a query for diferente de nula
+                            stmt.close(); //fechara a query
+                        }
+                        con.close(); //fechara a conexão
+                    } catch (SQLException e) {
+                        e.printStackTrace(); //erro
+                    }
+                }   
+            } 
 	}
         
         public List<Livro> procuraExemplar(String titulo, String autor, String editora, int id, int aux) { //metodo para procurar exemplares
@@ -278,7 +305,7 @@ public class Controle {
                 if(rs != null && rs.next()){ //verifica se a coluna "emprestado" esta preenchida
                     verificaEmprestado = rs.getInt("emprestado");  //variavel recebe o valor que estiver na coluna "emprestado"
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERRO:"+e.getMessage()); //msg de erro caso houver
             }
             
@@ -298,9 +325,18 @@ public class Controle {
         
                     JOptionPane.showMessageDialog(null, "Empréstimo realizado com sucesso!");
                     aux++;
-                }catch (Exception e) {
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro ao efetuar o empréstimo!\nERRO:"+e.getMessage());
-                }
+                } finally { //finalmente
+                    try { //tenta
+                        if(stmt != null){ //se a query for diferente de nula
+                            stmt.close(); //fechara a query
+                        }
+                        con.close(); //fechara a conexão
+                    } catch (SQLException e) {
+                        e.printStackTrace(); //erro
+                    }
+                } 
             
             if(aux>0){
                 try{
@@ -309,7 +345,16 @@ public class Controle {
                     preparedStmt.execute();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro ao realizar o empréstimo!\nERRO:"+e.getMessage());
-                }
+                } finally { //finalmente
+                    try { //tenta
+                        if(stmt != null){ //se a query for diferente de nula
+                            stmt.close(); //fechara a query
+                        }
+                        con.close(); //fechara a conexão
+                    } catch (SQLException e) {
+                        e.printStackTrace(); //erro
+                    }
+                }       
             }		
             }
         }
@@ -337,7 +382,7 @@ public class Controle {
             }
         } catch(SQLException ex){
             Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex); //erro
-        }       
+        }
         
         return listaemprestimos; //retorna a lista
     }
@@ -376,33 +421,29 @@ public class Controle {
     }
     
     public List<Emprestimo> exibeEmprestimo(){
-            List<Emprestimo> listaEmprestimos = new ArrayList<Emprestimo>(); //cria uma lista de estudantes
+        List<Emprestimo> listaEmprestimos = new ArrayList<Emprestimo>(); //cria uma lista de estudantes
             
-            try{
-                stmt = con.prepareStatement("SELECT * FROM emprestimo"); //linha de comando do mysql
-                rs  = stmt.executeQuery(); //executa a linah de comando
+        try{
+            stmt = con.prepareStatement("SELECT * FROM emprestimo"); //linha de comando do mysql
+            rs  = stmt.executeQuery(); //executa a linah de comando
              
-                while(rs.next()){  //laço para receber os valores do banco de dados e inserir na lista
-                    Emprestimo emprestimo = new Emprestimo(); //cria o objeto emprestimo da classe Emprestimo
-                    emprestimo.setId(rs.getInt("idemprestimo")); //recebe do banco de dados a coluna idemprestimo
-                    emprestimo.setTitulo(rs.getString("titulo")); //recebe do banco de dados a coluna titulo
-                    emprestimo.setNomeEst(rs.getString("nomeEstudante")); //recebe do banco de dados a coluna nomeEstudante
-                    emprestimo.setDataPrevisao(rs.getDate("dataPrevisao")); //recebe do banco de dados a coluna dataPrevisao
-                    emprestimo.setEstudante(rs.getInt("idestudante"));   //recebe do banco de dados a coluna idestudante
-                    emprestimo.setExemplar(rs.getInt("idTitulo"));   //recebe do banco de dados a coluna idTitulo
-                    emprestimo.setDataDevolucao(rs.getDate("dataDevolucao")); //recebe do banco de dados a coluna dataDevolucao
-                    emprestimo.setDataEmprestimo(rs.getString("dataEmprestimo")); //recebe do banco de dados a coluna dataEmprestimo
-                    
-                    listaEmprestimos.add(emprestimo); //adiciona na lista
-                }
-            } catch(SQLException ex){
-                Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
+            while(rs.next()){  //laço para receber os valores do banco de dados e inserir na lista
+                Emprestimo emprestimo = new Emprestimo(); //cria o objeto emprestimo da classe Emprestimo
+                emprestimo.setId(rs.getInt("idemprestimo")); //recebe do banco de dados a coluna idemprestimo
+                emprestimo.setTitulo(rs.getString("titulo")); //recebe do banco de dados a coluna titulo
+                emprestimo.setNomeEst(rs.getString("nomeEstudante")); //recebe do banco de dados a coluna nomeEstudante
+                emprestimo.setDataPrevisao(rs.getDate("dataPrevisao")); //recebe do banco de dados a coluna dataPrevisao
+                emprestimo.setEstudante(rs.getInt("idestudante"));   //recebe do banco de dados a coluna idestudante
+                emprestimo.setExemplar(rs.getInt("idTitulo"));   //recebe do banco de dados a coluna idTitulo
+                emprestimo.setDataDevolucao(rs.getDate("dataDevolucao")); //recebe do banco de dados a coluna dataDevolucao
+                emprestimo.setDataEmprestimo(rs.getString("dataEmprestimo")); //recebe do banco de dados a coluna dataEmprestimo
+                  
+                listaEmprestimos.add(emprestimo); //adiciona na lista
             }
-            
-            return listaEmprestimos; //retorna a lista
+        } catch(SQLException ex){
+            Logger.getLogger(Controle.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    
-        
-    
+            
+        return listaEmprestimos; //retorna a lista
+    }  
 }

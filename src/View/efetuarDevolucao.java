@@ -355,19 +355,22 @@ public class efetuarDevolucao extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nenhum empréstimo encontrado!"); //caso sim, aparecerá uma mensagem 
         }
         
-        for(Emprestimo e: c.procuraEmprestimo(titulo, intIdExemplar, auxIdEmprestimo)){ //laço para percorrer a lista de emprestimos e preencher os campos do formulario
-            auxIdEmprestimo = e.getId(); //recebe o id do emprestimo
-            edtIdEmprestimo.setText(Integer.toString(auxIdEmprestimo)); //campo edtIdEmprestimo recebera o valor convertido para String
-            auxIdExemplar = e.getExemplar(); //recebe o id do exemplar
-            edtIdExemplar.setText(Integer.toString(auxIdExemplar)); //campo edtIdExemplar recebera o valor convertido para String
-            auxTitulo = e.getTitulo(); //recebe o titulo do exemplar
-            edtTitulo.setText(auxTitulo); //campo edtTitulo recebera o valor da variavel auxTitulo
-            auxIdEstudante = e.getEstudante(); //recebe o id do estudante
-            edtIdEstudante.setText(Integer.toString(auxIdEstudante)); //campo edtIdEstudante recebera o valor convertido para String
-            nome = e.getNomeEst(); //recebe o nome do estudante
-            edtNome.setText(nome); //campo edtNome recebera o valor da variavel nome
+        if(c.procuraEmprestimo(titulo, intIdExemplar, auxIdEmprestimo).isEmpty()){ //verifica se nenhum estudante foi encontrado
+            JOptionPane.showMessageDialog(null, "Nenhum empréstimo encontrado!"); //caso sim, a mensagem será apresentada
+        } else {
+            for(Emprestimo e: c.procuraEmprestimo(titulo, intIdExemplar, auxIdEmprestimo)){ //laço para percorrer a lista de emprestimos e preencher os campos do formulario
+                auxIdEmprestimo = e.getId(); //recebe o id do emprestimo
+                edtIdEmprestimo.setText(Integer.toString(auxIdEmprestimo)); //campo edtIdEmprestimo recebera o valor convertido para String
+                auxIdExemplar = e.getExemplar(); //recebe o id do exemplar
+                edtIdExemplar.setText(Integer.toString(auxIdExemplar)); //campo edtIdExemplar recebera o valor convertido para String
+                auxTitulo = e.getTitulo(); //recebe o titulo do exemplar
+                edtTitulo.setText(auxTitulo); //campo edtTitulo recebera o valor da variavel auxTitulo
+                auxIdEstudante = e.getEstudante(); //recebe o id do estudante
+                edtIdEstudante.setText(Integer.toString(auxIdEstudante)); //campo edtIdEstudante recebera o valor convertido para String
+                nome = e.getNomeEst(); //recebe o nome do estudante
+                edtNome.setText(nome); //campo edtNome recebera o valor da variavel nome
+            }
         }
-
         
         for(Livro e: c.procuraExemplar(auxTitulo, "vazio", "vazio", auxIdExemplar, 1)){ //laço para percorrer a lista de exemplares e preencher os campos do formulario
             String autor = e.getAutor(); //a vaiavel recebe o autor 

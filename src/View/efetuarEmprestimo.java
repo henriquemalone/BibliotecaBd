@@ -160,9 +160,15 @@ public class efetuarEmprestimo extends javax.swing.JFrame {
 
         jLabel8.setText("Nome:");
 
+        edtNome.setEnabled(false);
+
         jLabel9.setText("Endereço:");
 
+        edtEndereco.setEnabled(false);
+
         jLabel10.setText("Nº:");
+
+        edtNum.setEnabled(false);
 
         jLabel11.setText("CPF:");
         jLabel11.setToolTipText("");
@@ -172,6 +178,7 @@ public class efetuarEmprestimo extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        edtCpf.setEnabled(false);
 
         jLabel12.setText("RG:");
 
@@ -180,6 +187,7 @@ public class efetuarEmprestimo extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        edtRg.setEnabled(false);
 
         btnBuscarEstudante.setText("Buscar");
         btnBuscarEstudante.addActionListener(new java.awt.event.ActionListener() {
@@ -418,17 +426,22 @@ public class efetuarEmprestimo extends javax.swing.JFrame {
         if(edtIdExemplar.getText().toString().isEmpty() && edtTitulo.getText().toString().isEmpty()){ //verifica se todos os campos estão vazios
             JOptionPane.showMessageDialog(null, "Nenhum exemplar encontrado!"); //caso sim, a mensagem será apresentada
         }
-        for(Livro e: c.procuraExemplar(titulo,"vazio","vazio",intId, aux)){ //laço para percorrer a lista de exemplares e preencher os campos do formulario
-            int auxId = e.getId(); //variavel auxId recebera o ID do exemplar
-            edtIdExemplar.setText(Integer.toString(auxId)); //campo edtIdExemplar é preenchido com o valor da variavel auxId apos ser convertida para um tipo String
-            String auxTitulo = e.getTitulo(); //variavel auxTitulo recebera o titulo
-            edtTitulo.setText(auxTitulo); //campo edtTitulo é preenchido com o valor da variavel auxTitulo
-            String autor = e.getAutor(); //variavel autor recebera o autor
-            edtAutor.setText(autor); //campo edtAutor é preenchido com o valor da variavel autor
-            String editora = e.getEditora(); //variavel editora recebera a editora
-            edtEditora.setText(editora); //campo edtEditora é preenchido com o valor da variavel editora
-            String categoria = e.getCategoria(); //variavel categoria recebera a categoria
-            edtCategoria.addItem(categoria); //campo edtCategoria é preenchido com o valor da variavel categoria
+        
+        if(c.procuraExemplar(titulo,"vazio","vazio",intId, aux).isEmpty()){ //verifica se nenhum exemplar foi encontrado
+            JOptionPane.showMessageDialog(null, "Nenhum exemplar encontrado!"); //caso sim, a mensagem será apresentada
+        } else {
+            for(Livro e: c.procuraExemplar(titulo,"vazio","vazio",intId, aux)){ //laço para percorrer a lista de exemplares e preencher os campos do formulario
+                int auxId = e.getId(); //variavel auxId recebera o ID do exemplar
+                edtIdExemplar.setText(Integer.toString(auxId)); //campo edtIdExemplar é preenchido com o valor da variavel auxId apos ser convertida para um tipo String
+                String auxTitulo = e.getTitulo(); //variavel auxTitulo recebera o titulo
+                edtTitulo.setText(auxTitulo); //campo edtTitulo é preenchido com o valor da variavel auxTitulo
+                String autor = e.getAutor(); //variavel autor recebera o autor
+                edtAutor.setText(autor); //campo edtAutor é preenchido com o valor da variavel autor
+                String editora = e.getEditora(); //variavel editora recebera a editora
+                edtEditora.setText(editora); //campo edtEditora é preenchido com o valor da variavel editora
+                String categoria = e.getCategoria(); //variavel categoria recebera a categoria
+                edtCategoria.addItem(categoria); //campo edtCategoria é preenchido com o valor da variavel categoria
+            }
         }
     }//GEN-LAST:event_btnBuscarExemplarActionPerformed
 
@@ -460,19 +473,24 @@ public class efetuarEmprestimo extends javax.swing.JFrame {
         if(edtIdEstudante.getText().toString().isEmpty() && edtNome.getText().toString().isEmpty()){ //verifica se todos os campos estão vazios
             JOptionPane.showMessageDialog(null, "Nenhum estudante encontrado!"); //caso sim, a mensagem sera exibida
         }
-        for(Estudante e: c.procuraEstudante(intId, nome, 1)){ //laço para percorrer a lista de estudantes e preencher os campos do formulario
-            int auxId = e.getId(); //variavel auxId recebera o ID do estudante
-            edtIdEstudante.setText(Integer.toString(auxId)); //campo edtIdEstudante sera preenchido com a variavel auxId após convertido para uma variavel do tipo String
-            String auxNome = e.getNome(); //variavel auxNome recebera o nome do estudante
-            edtNome.setText(auxNome); //campo edtNome sera preenchido com a variavel auxNome
-            String endereco = e.getEnd(); //variavel endereco recebera o endereço do estudante
-            edtEndereco.setText(endereco);//campo edtEndereco sera preenchido com a variavel endereco
-            String num = e.getNum(); //variavel num recebera o numero do estudante
-            edtNum.setText(num);//campo edtNum sera preenchido com a variavel num
-            String cpf = e.getCpf(); //variavel cpf recebera o cpf do estudante
-            edtCpf.setText(cpf);//campo edtCpf sera preenchido com a variavel cpf
-            String rg = e.getRg(); //variavel rg recebera o rg do estudante
-            edtRg.setText(rg);//campo edtRg sera preenchido com a variavel rg
+        
+        if(c.procuraEstudante(intId, nome, 1).isEmpty()){ //verifica se nenhum estudante foi encontrado
+            JOptionPane.showMessageDialog(null, "Nenhum estudante encontrado!"); //caso sim, a mensagem será apresentada
+        } else {
+            for(Estudante e: c.procuraEstudante(intId, nome, 1)){ //laço para percorrer a lista de estudantes e preencher os campos do formulario
+                int auxId = e.getId(); //variavel auxId recebera o ID do estudante
+                edtIdEstudante.setText(Integer.toString(auxId)); //campo edtIdEstudante sera preenchido com a variavel auxId após convertido para uma variavel do tipo String
+                String auxNome = e.getNome(); //variavel auxNome recebera o nome do estudante
+                edtNome.setText(auxNome); //campo edtNome sera preenchido com a variavel auxNome
+                String endereco = e.getEnd(); //variavel endereco recebera o endereço do estudante
+                edtEndereco.setText(endereco);//campo edtEndereco sera preenchido com a variavel endereco
+                String num = e.getNum(); //variavel num recebera o numero do estudante
+                edtNum.setText(num);//campo edtNum sera preenchido com a variavel num
+                String cpf = e.getCpf(); //variavel cpf recebera o cpf do estudante
+                edtCpf.setText(cpf);//campo edtCpf sera preenchido com a variavel cpf
+                String rg = e.getRg(); //variavel rg recebera o rg do estudante
+                edtRg.setText(rg);//campo edtRg sera preenchido com a variavel rg
+            }
         }
     }//GEN-LAST:event_btnBuscarEstudanteActionPerformed
 

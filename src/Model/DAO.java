@@ -17,8 +17,9 @@ public class DAO {
     }
     
     public void desconectar(){ //metodo para desconectar do banco de dados
+        con = conectar();
         try {
-            conectar().close(); //fecha conexão com banco de dados
+            con.close(); //fecha conexão com banco de dados
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

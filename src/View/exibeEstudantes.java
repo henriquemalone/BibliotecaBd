@@ -45,6 +45,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Exibe Estudantes");
         setExtendedState(6);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -104,7 +105,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
                                 .addComponent(edtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1)))
-                        .addGap(0, 214, Short.MAX_VALUE))
+                        .addGap(0, 224, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -149,9 +150,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,6 +241,7 @@ public class exibeEstudantes extends javax.swing.JFrame {
         linhaSel = jTable1.getSelectedRow();  //variavel 'linhaSel' recebera o numedo da linha da tabela selecionada 
         int id = (int) tabela.getValueAt(linhaSel,0); //variavel 'id' recebera o valor das coordenadas selecionada(linhaSel e coluna zero para receber o id do estudante) 
         
+        cadestudante.setTitle("Editar Estudante"); //muda o titulo do formulario
         cadestudante.preencheFormulario(1, id); //chama o metodo 'preencheFormulario' passando o numero um como parametro e o id do estudante selecionado
         cadestudante.setLocationRelativeTo(null); //centraliza tela de cadastro de estudante
         cadestudante.setVisible(true); //abre tela de cadastro de estudante

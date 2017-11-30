@@ -175,6 +175,7 @@ public class Controle {
         }
         
         public boolean adicionaExemplar(String titulo, String autor, String editora, String categoria) { //metodo para adicionar exemplar no banco de dados
+            
             try{
                 String query = " insert into exemplares (titulo, autor, editora, categoria, emprestado)"+ " values (?, ?, ?, ?, 0)"; //linha de comando do myseql
                 PreparedStatement preparedStmt = dao.conectar().prepareStatement(query); //conexão com o banco de dados

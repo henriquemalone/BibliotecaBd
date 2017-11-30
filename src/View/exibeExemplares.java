@@ -23,7 +23,7 @@ public class exibeExemplares extends javax.swing.JFrame {
     
     public exibeExemplares() {
         initComponents();
-        dao.conectar(); //conecta com o banco de dados
+        conecta();
         preencherTabela(); //chama função para preencher a tabela
     }
 
@@ -45,6 +45,7 @@ public class exibeExemplares extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Exibe Exemplares");
         setExtendedState(6);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -120,7 +121,7 @@ public class exibeExemplares extends javax.swing.JFrame {
                                 .addComponent(edtEditora, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnProcurar)))
-                        .addGap(0, 53, Short.MAX_VALUE)))
+                        .addGap(0, 63, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,9 +157,7 @@ public class exibeExemplares extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +194,7 @@ public class exibeExemplares extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        dao.desconectar(); //desconecta do banco de dados
+        desconecta();
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
@@ -227,7 +226,7 @@ public class exibeExemplares extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-    
+
     }//GEN-LAST:event_formWindowOpened
 
     public static void main(String args[]) {
@@ -260,6 +259,14 @@ public class exibeExemplares extends javax.swing.JFrame {
                 new exibeExemplares().setVisible(true);
             }
         });
+    }
+    
+    public void conecta(){
+        dao.conectar();
+    }
+    
+    public void desconecta(){
+        dao.desconectar();
     }
     
     public void limparTabela(){ //método para limpar a tabela
